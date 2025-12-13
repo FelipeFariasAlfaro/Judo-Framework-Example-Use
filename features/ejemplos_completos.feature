@@ -1,5 +1,5 @@
 # language: es
-@es_ejecutar_todo
+@es_ejecutar_todo @all
 Característica: Demostración Completa de Judo Framework
   Esta característica demuestra todas las capacidades de Judo Framework
   Cada escenario muestra una funcionalidad o tipo de paso específico

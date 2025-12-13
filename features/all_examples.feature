@@ -1,5 +1,5 @@
 # language: en
-@eng_examples_all
+@eng_examples_all @all
 Feature: Judo Framework Complete Showcase
   This feature demonstrates all capabilities of Judo Framework
   Each scenario showcases a specific feature or step type

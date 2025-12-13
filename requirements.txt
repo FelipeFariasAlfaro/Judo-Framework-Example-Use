@@ -1,0 +1,48 @@
+# ============================================
+# JUDO FRAMEWORK - DEPENDENCIAS PRINCIPALES
+# ============================================
+
+# Judo Framework - Framework principal para testing de APIs
+# Incluye automáticamente: behave, requests, jsonpath-ng y otras dependencias
+judo-framework>=1.0.0
+
+# Python-dotenv - Carga variables de entorno desde archivos .env
+# Útil para manejar configuración sensible (tokens, URLs, etc.)
+python-dotenv>=0.19.0
+
+# Colorama - Colores en terminal multiplataforma
+# Mejora la legibilidad de salidas en consola (opcional pero recomendado)
+colorama>=0.4.4
+# ============================================
+# NOTA IMPORTANTE SOBRE DEPENDENCIAS
+# ============================================
+# 
+# ¿Por qué tan pocas dependencias?
+# 
+# Judo Framework incluye automáticamente estas dependencias:
+# - behave (motor BDD)
+# - requests (cliente HTTP) 
+# - jsonpath-ng (validaciones JSONPath)
+# - y otras dependencias necesarias para API testing
+# 
+# Por eso NO necesitas instalarlas por separado.
+# Solo añadimos las que NO vienen incluidas con judo-framework.
+# ============================================
+
+# ============================================
+# DEPENDENCIAS OPCIONALES (COMENTADAS)
+# ============================================
+# 
+# Descomenta las siguientes líneas si necesitas funcionalidades adicionales:
+
+# Faker - Generación de datos de prueba realistas
+# faker>=15.0.0
+
+# Cerberus - Validación de esquemas de datos avanzada
+# cerberus>=1.3.4
+
+# Allure-behave - Reportes HTML más atractivos
+# allure-behave>=2.12.0
+
+# Requests-mock - Mock de peticiones HTTP para testing
+# requests-mock>=1.10.0
