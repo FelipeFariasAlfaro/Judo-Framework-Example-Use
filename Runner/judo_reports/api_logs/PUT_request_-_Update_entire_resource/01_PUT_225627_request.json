@@ -1,0 +1,20 @@
+{
+  "method": "PUT",
+  "url": "https://jsonplaceholder.typicode.com/posts/1",
+  "endpoint": "/posts/1",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "User-Agent": "Judo-Framework-Behave/1.0"
+  },
+  "query_parameters": {},
+  "timestamp": "2025-12-12T22:56:27.082915",
+  "scenario": "PUT request - Update entire resource",
+  "body": {
+    "id": 1,
+    "title": "Updated Title",
+    "body": "Updated Body",
+    "userId": 1
+  },
+  "body_type": "application/json"
+}

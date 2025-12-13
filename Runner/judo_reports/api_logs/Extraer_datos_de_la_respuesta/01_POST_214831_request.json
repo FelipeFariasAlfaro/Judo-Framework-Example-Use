@@ -1,0 +1,19 @@
+{
+  "method": "POST",
+  "url": "https://jsonplaceholder.typicode.com/posts",
+  "endpoint": "/posts",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "User-Agent": "Judo-Framework-Behave/1.0"
+  },
+  "query_parameters": {},
+  "timestamp": "2025-12-12T21:48:30.892998",
+  "scenario": "Extraer datos de la respuesta",
+  "body": {
+    "title": "Prueba Extracción",
+    "body": "Probando extracción",
+    "userId": 1
+  },
+  "body_type": "application/json"
+}

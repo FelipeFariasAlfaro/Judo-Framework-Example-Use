@@ -1,0 +1,17 @@
+{
+  "method": "PATCH",
+  "url": "https://jsonplaceholder.typicode.com/posts/1",
+  "endpoint": "/posts/1",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "User-Agent": "Judo-Framework-Behave/1.0"
+  },
+  "query_parameters": {},
+  "timestamp": "2025-12-12T23:31:33.523318",
+  "scenario": "Complete CRUD workflow with existing resource",
+  "body": {
+    "title": "Patched CRUD Post"
+  },
+  "body_type": "application/json"
+}

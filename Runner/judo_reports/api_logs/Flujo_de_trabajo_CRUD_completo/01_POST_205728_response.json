@@ -1,0 +1,43 @@
+{
+  "status_code": 201,
+  "status_text": "Unknown",
+  "headers": {
+    "Date": "Fri, 12 Dec 2025 23:57:29 GMT",
+    "Content-Type": "application/json; charset=utf-8",
+    "Content-Length": "113",
+    "Connection": "keep-alive",
+    "access-control-allow-credentials": "true",
+    "access-control-expose-headers": "Location",
+    "Cache-Control": "no-cache",
+    "etag": "W/\"71-Sfl4jJuPfkKnSj96rZlJetnGBhs\"",
+    "expires": "-1",
+    "location": "https://jsonplaceholder.typicode.com/posts/101",
+    "nel": "{\"report_to\":\"heroku-nel\",\"response_headers\":[\"Via\"],\"max_age\":3600,\"success_fraction\":0.01,\"failure_fraction\":0.1}",
+    "pragma": "no-cache",
+    "report-to": "{\"group\":\"heroku-nel\",\"endpoints\":[{\"url\":\"https://nel.heroku.com/reports?s=fTdn5LRS8FkWVOhd6IcA7i6dCd%2BczOOqVsMIdAgFuDs%3D\\u0026sid=e11707d5-02a7-43ef-b45e-2cf4d2036f7d\\u0026ts=1765583849\"}],\"max_age\":3600}",
+    "reporting-endpoints": "heroku-nel=\"https://nel.heroku.com/reports?s=fTdn5LRS8FkWVOhd6IcA7i6dCd%2BczOOqVsMIdAgFuDs%3D&sid=e11707d5-02a7-43ef-b45e-2cf4d2036f7d&ts=1765583849\"",
+    "Server": "cloudflare",
+    "vary": "Origin, X-HTTP-Method-Override, Accept-Encoding",
+    "via": "2.0 heroku-router",
+    "x-content-type-options": "nosniff",
+    "x-powered-by": "Express",
+    "x-ratelimit-limit": "1000",
+    "x-ratelimit-remaining": "994",
+    "x-ratelimit-reset": "1765583889",
+    "cf-cache-status": "DYNAMIC",
+    "CF-RAY": "9ad12a12dfde1eab-EZE",
+    "alt-svc": "h3=\":443\"; ma=86400"
+  },
+  "content_type": "application/json; charset=utf-8",
+  "body": {
+    "title": "Post de Prueba CRUD",
+    "body": "Probando operaciones CRUD completas",
+    "userId": 1,
+    "id": 101
+  },
+  "text": "{\n  \"title\": \"Post de Prueba CRUD\",\n  \"body\": \"Probando operaciones CRUD completas\",\n  \"userId\": 1,\n  \"id\": 101\n}",
+  "size_bytes": 113,
+  "elapsed_ms": 188.908,
+  "timestamp": "2025-12-12T20:57:28.773835",
+  "scenario": "Flujo de trabajo CRUD completo"
+}

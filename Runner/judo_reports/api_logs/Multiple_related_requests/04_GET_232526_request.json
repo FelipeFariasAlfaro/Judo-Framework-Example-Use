@@ -1,0 +1,17 @@
+{
+  "method": "GET",
+  "url": "https://jsonplaceholder.typicode.com/posts/1/comments",
+  "endpoint": "/posts/1/comments",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "User-Agent": "Judo-Framework-Behave/1.0"
+  },
+  "query_parameters": {
+    "userId": "1"
+  },
+  "timestamp": "2025-12-12T23:25:26.163975",
+  "scenario": "Multiple related requests",
+  "body": null,
+  "body_type": null
+}

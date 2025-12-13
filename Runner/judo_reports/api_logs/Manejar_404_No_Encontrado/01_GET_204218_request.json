@@ -1,0 +1,15 @@
+{
+  "method": "GET",
+  "url": "https://jsonplaceholder.typicode.com/users/999999",
+  "endpoint": "/users/999999",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "User-Agent": "Judo-Framework-Behave/1.0"
+  },
+  "query_parameters": {},
+  "timestamp": "2025-12-12T20:42:18.166533",
+  "scenario": "Manejar 404 No Encontrado",
+  "body": null,
+  "body_type": null
+}

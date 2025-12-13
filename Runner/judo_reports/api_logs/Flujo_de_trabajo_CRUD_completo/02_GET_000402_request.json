@@ -1,0 +1,15 @@
+{
+  "method": "GET",
+  "url": "https://jsonplaceholder.typicode.com/posts/101",
+  "endpoint": "/posts/101",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "User-Agent": "Judo-Framework-Behave/1.0"
+  },
+  "query_parameters": {},
+  "timestamp": "2025-12-13T00:04:02.413854",
+  "scenario": "Flujo de trabajo CRUD completo",
+  "body": null,
+  "body_type": null
+}

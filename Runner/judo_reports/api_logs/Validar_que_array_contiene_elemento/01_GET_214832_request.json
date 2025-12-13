@@ -1,0 +1,15 @@
+{
+  "method": "GET",
+  "url": "https://jsonplaceholder.typicode.com/users",
+  "endpoint": "/users",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "User-Agent": "Judo-Framework-Behave/1.0"
+  },
+  "query_parameters": {},
+  "timestamp": "2025-12-12T21:48:32.053680",
+  "scenario": "Validar que array contiene elemento",
+  "body": null,
+  "body_type": null
+}

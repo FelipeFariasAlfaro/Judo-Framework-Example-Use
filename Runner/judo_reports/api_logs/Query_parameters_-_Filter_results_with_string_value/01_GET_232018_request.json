@@ -1,0 +1,17 @@
+{
+  "method": "GET",
+  "url": "https://jsonplaceholder.typicode.com/posts",
+  "endpoint": "/posts",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "User-Agent": "Judo-Framework-Behave/1.0"
+  },
+  "query_parameters": {
+    "userId": "1"
+  },
+  "timestamp": "2025-12-12T23:20:18.235163",
+  "scenario": "Query parameters - Filter results with string value",
+  "body": null,
+  "body_type": null
+}
