@@ -30,7 +30,6 @@ os.environ['JUDO_DEBUG_REPORTER'] = 'false'
 # Opcional: Configurar nivel de logging adicional
 # os.environ['JUDO_LOG_LEVEL'] = 'INFO'
 
-
 class MyRunner(BaseRunner):
     """
     Runner personalizado que extiende BaseRunner de Judo Framework.
@@ -42,9 +41,7 @@ class MyRunner(BaseRunner):
     basedir = "./judo_reports"
 
     def __init__(self):
-        """
-        Inicializa el runner con configuración personalizada.
-        
+        """        
         Configuraciones principales:
         - Rutas de archivos y directorios
         - Generación de reportes
@@ -55,11 +52,9 @@ class MyRunner(BaseRunner):
             # ============================================
             # CONFIGURACIÓN DE DIRECTORIOS
             # ============================================
-            
             # Directorio donde están los archivos .feature
             # "../features" = subir un nivel desde Runner/ y entrar a features/
             features_dir="../features",
-            
             # Directorio donde se guardarán todos los reportes
             # "./judo_reports" = crear carpeta judo_reports dentro de Runner/
             output_dir=self.basedir,
@@ -67,23 +62,19 @@ class MyRunner(BaseRunner):
             # ============================================
             # CONFIGURACIÓN DE REPORTES
             # ============================================
-            
             # Generar reportes en formato JSON cucumber (compatible con CI/CD)
             # Útil para integración con XRAY, Jenkins, GitHub Actions, etc.
             generate_cucumber_json=True,
-            
             # Directorio específico para reportes JSON
             cucumber_json_dir=f"{self.basedir}/cucumber-json",
 
             # ============================================
             # CONFIGURACIÓN DE EJECUCIÓN
             # ============================================
-            
             # Ejecución en paralelo
             # False = Ejecutar tests secuencialmente (más estable para demo)
             # True = Ejecutar tests en paralelo (más rápido)
             parallel=False,
-            
             # Número máximo de workers para ejecución paralela
             # Solo se usa si parallel=True
             max_workers=2,
@@ -91,11 +82,8 @@ class MyRunner(BaseRunner):
             # ============================================
             # CONFIGURACIÓN DE LOGGING DE API
             # ============================================
-            
             # Guardar todas las peticiones y respuestas HTTP
-            # Extremadamente útil para debugging y auditoría
             save_requests_responses=True,
-            
             # Directorio donde se guardan los logs de API
             # Cada escenario tendrá su propia carpeta con:
             # - Request completo (headers, body, URL)
@@ -105,41 +93,10 @@ class MyRunner(BaseRunner):
 
     def run_tests(self):
         """
-        Ejecuta todos los tests de demostración en inglés.
-        Utiliza el tag @eng_examples_all que incluye todos los ejemplos
-        en inglés del archivo all_examples.feature.
+        Ejecuta todos los tests especificados en el tag.
         """
         return self.run(tags=["@mix"])
     
-
-
-def print_banner():
-    """Imprime un banner informativo al inicio."""
-    print("=" * 60)
-    print("🥋 JUDO FRAMEWORK - PROYECTO DE DEMOSTRACIÓN")
-
-def print_report_locations():
-    """Imprime las ubicaciones de los reportes generados."""
-    print("\n📄 REPORTES GENERADOS:")
-    print("-" * 30)
-    
-    # Verificar si existen los directorios de reportes
-    reports_dir = Path("./judo_reports")
-    
-    if reports_dir.exists():
-        html_report = reports_dir / "test_execution_report.html"
-        if html_report.exists():
-            print(f"🌐 Reporte HTML: {html_report.absolute()}")
-        
-        json_dir = reports_dir / "cucumber-json"
-        if json_dir.exists():
-            print(f"📋 Reportes JSON: {json_dir.absolute()}")
-        
-        api_logs_dir = reports_dir / "api_logs"
-        if api_logs_dir.exists():
-            print(f"🔍 Logs de API: {api_logs_dir.absolute()}")
-    
-    print("-" * 30)
 
 
 # ============================================
@@ -158,9 +115,6 @@ if __name__ == "__main__":
     script_dir = os.path.dirname(os.path.abspath(__file__))
     os.chdir(script_dir)
     
-    # Mostrar banner informativo
-    print_banner()
-    
     # Mostrar información de configuración
     print(f"📁 Directorio de features: {os.path.abspath('../features')}")
     print(f"📊 Directorio de reportes: {os.path.abspath('./judo_reports')}")
@@ -169,15 +123,9 @@ if __name__ == "__main__":
     try:
         # Crear instancia del runner
         runner = MyRunner()
-        
         print("\nIniciando ejecución de tests...")
-        
-        # Ejecutar tests principales (inglés)
+        # Ejecutar tests
         results = runner.run_tests()
-
-        # Mostrar ubicaciones de reportes
-        print_report_locations()
-
     
     except KeyboardInterrupt:
         print("\n\n⏹Ejecución interrumpida por el usuario")
