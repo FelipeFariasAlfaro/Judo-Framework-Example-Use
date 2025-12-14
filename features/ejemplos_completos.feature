@@ -313,7 +313,7 @@ Característica: Demostración Completa de Judo Framework
   Escenario: Establecer headers desde variables de entorno
     # Esto demuestra cómo cargar headers desde archivo .env
     # Crea un archivo .env con: API_TOKEN=Bearer test123
-    Dado que agrego el header "Authorization" desde env "API_TOKEN"
+    Dado que establezco el header "Authorization" desde env "API_TOKEN"
     Cuando hago una petición GET a "/users/1"
     Entonces el código de respuesta debe ser 200
     Y la respuesta debe contener el campo "id"
