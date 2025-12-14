@@ -6,8 +6,11 @@ Este runner está configurado específicamente para demostrar todas las capacida
 de Judo Framework. Incluye configuración optimizada para reportes, logging y
 organización de resultados.
 
+Para probar diferentes casos, modifica el TAG @ en la funcion run_tests()
+
 Autor: Felipe Farias A.
 Fecha: 2025
+https://www.centy.cl
 """
 
 from judo.runner.base_runner import BaseRunner
@@ -100,13 +103,13 @@ class MyRunner(BaseRunner):
             requests_responses_dir=f"{self.basedir}/api_logs"
         )
 
-    def run_smoke_tests(self):
+    def run_tests(self):
         """
         Ejecuta todos los tests de demostración en inglés.
         Utiliza el tag @eng_examples_all que incluye todos los ejemplos
         en inglés del archivo all_examples.feature.
         """
-        return self.run(tags=["@eng_examples_all"])
+        return self.run(tags=["@mix"])
     
 
 
@@ -114,49 +117,6 @@ def print_banner():
     """Imprime un banner informativo al inicio."""
     print("=" * 60)
     print("🥋 JUDO FRAMEWORK - PROYECTO DE DEMOSTRACIÓN")
-    print("=" * 60)
-    print("📋 Este runner ejecuta tests que demuestran:")
-    print("   • Métodos HTTP (GET, POST, PUT, PATCH, DELETE)")
-    print("   • Validaciones avanzadas (JSONPath, esquemas)")
-    print("   • Manejo de variables y archivos")
-    print("   • Flujos de trabajo complejos")
-    print("   • Reportes detallados y logging")
-    print("=" * 60)
-
-
-def print_results_summary(results):
-    """
-    Imprime un resumen detallado de los resultados.
-    
-    Args:
-        results (dict): Resultados de la ejecución
-    """
-    print("\n" + "=" * 60)
-    print("📊 RESUMEN DE RESULTADOS")
-    print("=" * 60)
-    
-    total = results.get('total', 0)
-    passed = results.get('passed', 0)
-    failed = results.get('failed', 0)
-    
-    if total > 0:
-        success_rate = (passed / total) * 100
-        print(f"✅ Tests exitosos: {passed}")
-        print(f"❌ Tests fallidos: {failed}")
-        print(f"📈 Total ejecutados: {total}")
-        print(f"🎯 Tasa de éxito: {success_rate:.1f}%")
-        
-        if success_rate == 100:
-            print("🎉 ¡Todos los tests pasaron exitosamente!")
-        elif success_rate >= 80:
-            print("👍 La mayoría de tests pasaron correctamente")
-        else:
-            print("⚠️  Varios tests fallaron, revisa los reportes")
-    else:
-        print("⚠️  No se ejecutaron tests")
-    
-    print("=" * 60)
-
 
 def print_report_locations():
     """Imprime las ubicaciones de los reportes generados."""
@@ -189,7 +149,6 @@ def print_report_locations():
 if __name__ == "__main__":
     """
     Punto de entrada principal del runner.
-    
     Este bloque se ejecuta cuando se llama directamente al script:
     python runner.py
     """
@@ -211,31 +170,17 @@ if __name__ == "__main__":
         # Crear instancia del runner
         runner = MyRunner()
         
-        print("\n🚀 Iniciando ejecución de tests...")
+        print("\nIniciando ejecución de tests...")
         
         # Ejecutar tests principales (inglés)
-        results = runner.run_smoke_tests()
-        
-        # Mostrar resumen de resultados
-        print_results_summary(results)
-        
+        results = runner.run_tests()
+
         # Mostrar ubicaciones de reportes
         print_report_locations()
-        
-        # Mensaje final basado en resultados
-        if results.get('total', 0) > 0:
-            if results.get('failed', 0) == 0:
-                print("\n🎉 ¡Ejecución completada exitosamente!")
-                print("💡 Abre el reporte HTML para ver detalles completos")
-            else:
-                print("\n⚠️  Ejecución completada con algunos fallos")
-                print("💡 Revisa los logs de API para debugging")
-        else:
-            print("\n❌ No se ejecutaron tests")
-            print("💡 Verifica que los archivos .feature tengan los tags correctos")
+
     
     except KeyboardInterrupt:
-        print("\n\n⏹️  Ejecución interrumpida por el usuario")
+        print("\n\n⏹Ejecución interrumpida por el usuario")
         sys.exit(1)
     
     except Exception as e:

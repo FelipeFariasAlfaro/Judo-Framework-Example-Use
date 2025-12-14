@@ -47,8 +47,12 @@ source venv/bin/activate
 
 pip install judo-framework
 
-#opcional, instalar judo y otras librerias
+# Opcional: instalar judo y otras librerías
 pip install -r requirements.txt
+
+# Para testing de Frontend, instalar Playwright
+pip install playwright
+playwright install chromium
 
 
 ```
@@ -68,15 +72,16 @@ pip install -r requirements.txt
 # Navegar al directorio Runner
 cd Runner
 
-# Ejecutar todos los tests
+# Ejecutar todos los tests (API + Frontend si están configurados)
 python runner.py
 ```
 
 **Ventajas del Runner:**
 - ✅ Configuración optimizada
-- ✅ Reportes HTML automáticos
+- ✅ Reportes HTML automáticos con screenshots
 - ✅ Logs detallados de API
 - ✅ Organización de resultados
+- ✅ Soporte para tests mixtos (API + Frontend)
 
 ### **Opción 2: Usando Behave Directamente**
 
@@ -94,6 +99,10 @@ behave features/ --tags=@http          # Tests de métodos HTTP
 behave features/ --tags=@validation    # Tests de validación
 behave features/ --tags=@workflow      # Flujos de trabajo
 behave features/ --tags=@files         # Operaciones con archivos
+behave features/ --tags=@test-front    # Tests de Frontend con Playwright
+
+# Ejecutar tests mixtos (API + Frontend)
+behave features/ --tags=@mix
 
 # Ejecutar con formato detallado
 behave features/ --tags=@eng_examples_all --format=pretty
@@ -272,6 +281,10 @@ API_BASE_URL=https://jsonplaceholder.typicode.com
 API_TOKEN=Bearer your-token-here
 TIMEOUT_SECONDS=30
 
+# Playwright Configuration (Frontend Testing)
+JUDO_USE_BROWSER=true              # Activar Playwright
+JUDO_SCREENSHOT_DIR=screenshots    # Directorio de screenshots
+
 # Debug Configuration
 JUDO_DEBUG_REPORTER=false
 JUDO_LOG_LEVEL=INFO
@@ -351,6 +364,182 @@ ls -la Runner/
 
 # Ejecutar diagnóstico completo
 python debug_judo.py
+```
+
+## 🌐 Testing de Frontend con Playwright
+
+Este proyecto incluye soporte para **testing de frontend** usando **Playwright**, permitiendo combinar tests de API y UI en el mismo framework.
+
+### **Instalación de Playwright**
+
+```bash
+# Instalar Playwright
+pip install playwright
+
+# Instalar browsers (Chromium recomendado)
+playwright install chromium
+
+# Verificar instalación
+playwright --version
+```
+
+### **Configuración**
+
+#### **1. Variables de Entorno (.env)**
+```bash
+# Activar Playwright
+JUDO_USE_BROWSER=true
+
+# Configuración de screenshots
+JUDO_SCREENSHOT_DIR=screenshots
+```
+
+#### **2. Tags de Activación**
+Para que Playwright se active, el escenario debe tener uno de estos tags:
+- `@test-front`
+- `@front`
+
+**Importante:** Ambas condiciones deben cumplirse:
+1. ✅ Variable `JUDO_USE_BROWSER=true` en `.env`
+2. ✅ Escenario con tag `@test-front` o `@front`
+
+### **Características de Playwright en este Proyecto**
+
+✅ **Navegador en pantalla completa** - Configurado con `no_viewport=True`  
+✅ **Screenshots automáticos** - Captura después de cada step  
+✅ **Screenshots de página completa** - Usa `full_page=True`  
+✅ **Nombres normalizados** - Sin tildes ni caracteres inválidos  
+✅ **Integración con reportes** - Screenshots adjuntos al HTML  
+✅ **Activación condicional** - Solo se inicia cuando es necesario  
+✅ **Sin conflictos con API tests** - Conviven en la misma ejecución  
+
+### **Ejemplo de Test Frontend**
+
+```gherkin
+@test-front
+Scenario: Navegación en pantalla completa
+  Given go to url "https://www.centyc.cl"
+  # Screenshot automático capturado después de cada step
+```
+
+### **Ejecutar Tests Frontend**
+
+```bash
+# Opción 1: Usando el Runner (recomendado)
+cd Runner
+python runner.py
+
+# Opción 2: Usando Behave directamente
+behave features/frontend.feature --tags=@test-front
+
+# Opción 3: Ejecutar tests mixtos (API + Frontend)
+behave features/ --tags=@mix
+```
+
+### **Estructura de Screenshots**
+
+Los screenshots se guardan en:
+```
+Runner/judo_reports/screenshots/
+├── Given_go_to_url_https_www.centyc.cl__passed.png
+├── When_I_click_on_button_passed.png
+└── Then_I_should_see_text_passed.png
+```
+
+**Formato del nombre:**
+```
+{Keyword}_{step_name}_{status}.png
+```
+
+Ejemplo: `Given_voy_a_la_url_https_www.centyc.cl__passed.png`
+
+### **Steps Disponibles para Frontend**
+
+```gherkin
+# Navegación
+Given go to url "https://example.com"
+Given voy a la url "https://example.com"
+
+# Más steps disponibles en features/steps/steps_examples.py
+```
+
+### **Troubleshooting Playwright**
+
+#### **Problema: "Playwright Sync API inside asyncio loop"**
+```bash
+# Solución: Asegúrate de que solo los escenarios con tags @test-front/@front inicialicen Playwright
+# El framework detecta automáticamente y evita conflictos con tests de API
+```
+
+#### **Problema: "Browser not found"**
+```bash
+# Solución: Instalar browsers de Playwright
+playwright install chromium
+
+# O instalar todos los browsers
+playwright install
+```
+
+#### **Problema: Screenshots no aparecen en el reporte**
+```bash
+# Verificar configuración en .env
+JUDO_SCREENSHOT_DIR=screenshots  # Sin "Runner/" al inicio
+
+# Verificar que el escenario tenga el tag correcto
+@test-front
+Scenario: Mi test frontend
+```
+
+#### **Problema: "WinError 123" al guardar screenshot**
+```bash
+# Causa: Caracteres inválidos en nombre de archivo (: / \ | ? *)
+# Solución: El framework normaliza automáticamente los nombres
+# Si persiste, verifica que no haya caracteres especiales en el nombre del step
+```
+
+### **Mezclar Tests de API y Frontend**
+
+Puedes ejecutar tests de API y Frontend en la misma ejecución:
+
+```gherkin
+Feature: Tests Mixtos
+
+  @api
+  Scenario: Test de API
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+    # Playwright NO se inicializa (sin tag @test-front)
+
+  @test-front
+  Scenario: Test de Frontend
+    Given go to url "https://example.com"
+    # Playwright SÍ se inicializa (tiene tag @test-front)
+```
+
+**Ventajas:**
+- ✅ Sin conflictos entre asyncio y Playwright Sync API
+- ✅ Mejor rendimiento (Playwright solo cuando es necesario)
+- ✅ Reportes unificados
+- ✅ Ejecución flexible
+
+### **Configuración Avanzada**
+
+Para personalizar Playwright, edita `features/environment.py`:
+
+```python
+# Cambiar browser
+context.judo_context.browser = context.judo_context.playwright.firefox.launch(...)
+
+# Modo headless
+browser_options = {
+    'headless': True,  # Sin interfaz gráfica
+    'args': ['--start-maximized']
+}
+
+# Viewport personalizado (en lugar de pantalla completa)
+context.judo_context.browser_context = context.judo_context.browser.new_context(
+    viewport={'width': 1920, 'height': 1080}
+)
 ```
 
 ## 📚 Recursos Adicionales

@@ -12,7 +12,7 @@ Feature: Judo Framework Complete Showcase
   # BASIC HTTP METHODS
   # ============================================
 
-  @http @get_en
+  @http @get_en @mix
   Scenario: GET request - Retrieve a resource
     # GET is used to retrieve/read data from the server
     # It should NOT modify any data
