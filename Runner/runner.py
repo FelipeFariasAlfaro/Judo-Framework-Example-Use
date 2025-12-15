@@ -25,7 +25,7 @@ class MyRunner(BaseRunner):
 
     def run_tests(self, tags=None):
         """Ejecuta tests con los tags especificados o todos si no se proveen tags"""
-        tags = tags or ["@mix"]
+        tags = tags or ["@all"]
         return self.run(tags=tags)
 
 
