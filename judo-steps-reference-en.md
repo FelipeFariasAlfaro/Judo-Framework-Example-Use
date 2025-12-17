@@ -125,8 +125,24 @@ Validates that the HTTP request response time is less than the specified limit.
 ### `Then the response "{json_path}" should be "{expected_value}"`
 Validates the value of a specific JSONPath against an expected value.
 
+**JSONPath Examples:**
+```gherkin
+Then the response "$.name" should be "John Doe"
+Then the response "$.user.email" should be "john@example.com"
+Then the response "$.data.address.city" should be "New York"
+Then the response "$.items[0].title" should be "First Item"
+```
+
 ### `Then the response "{json_path}" should be {expected_value:d}`
 Validates the numeric value of a specific JSONPath.
+
+**JSONPath Examples:**
+```gherkin
+Then the response "$.id" should be 123
+Then the response "$.user.age" should be 30
+Then the response "$.data.count" should be 10
+Then the response "$.items[0].price" should be 99
+```
 
 ### `Then the response "{json_path}" should match "{pattern}"`
 Validates a JSONPath expression result against a pattern.
@@ -137,6 +153,15 @@ Validates a JSONPath expression result against a pattern.
 
 ### `When I extract "{json_path}" from the response as "{variable_name}"`
 Extracts a value from the response and stores it in a variable for later use.
+
+**JSONPath Examples:**
+```gherkin
+When I extract "$.id" from the response as "userId"
+When I extract "$.user.email" from the response as "userEmail"
+When I extract "$.data.token" from the response as "authToken"
+When I extract "$.items[0].id" from the response as "firstItemId"
+When I extract "$.address.city" from the response as "city"
+```
 
 ### `When I store the response as "{variable_name}"`
 Stores the entire JSON response in a variable.
@@ -164,11 +189,37 @@ Verifies that the response array has exactly the specified number of elements.
 ### `Then each item in the response array should have "{key}"`
 Validates that all elements in the array have a specific field.
 
+**Examples:**
+```gherkin
+When I send a GET request to "/users"
+Then the response should be an array
+And each item in the response array should have "id"
+And each item in the response array should have "name"
+And each item in the response array should have "email"
+```
+
 ### `Then the response array should contain an item with "{key}" equal to "{value}"`
 Searches the response array for an element that has a field with a specific value.
 
+**Examples:**
+```gherkin
+Then the response array should contain an item with "id" equal to "123"
+Then the response array should contain an item with "name" equal to "John"
+```
+
 ### `Then the response array "{array_path}" should contain an item with "{key}" equal to "{value}"`
 Searches in a nested or root-level array for an element with a specific field-value pair.
+
+**JSONPath Examples:**
+```gherkin
+# Root-level array (when response is directly an array)
+Then the response array "users" should contain an item with "id" equal to "123"
+Then the response array "users" should contain an item with "name" equal to "John"
+
+# Nested array using dot notation
+Then the response array "data.items" should contain an item with "status" equal to "active"
+Then the response array "response.users" should contain an item with "email" equal to "john@example.com"
+```
 
 ---
 
@@ -214,32 +265,103 @@ Loads test data from inline YAML in the step text.
 ### `Then the response "{json_path}" should be a string`
 Validates that the value at the specified JSONPath is of type string.
 
+**JSONPath Examples:**
+```gherkin
+Then the response "$.name" should be a string
+Then the response "$.user.email" should be a string
+Then the response "$.data.description" should be a string
+```
+
 ### `Then the response "{json_path}" should be a number`
 Validates that the value at the specified JSONPath is of type number.
+
+**JSONPath Examples:**
+```gherkin
+Then the response "$.id" should be a number
+Then the response "$.user.age" should be a number
+Then the response "$.data.count" should be a number
+Then the response "$.items[0].price" should be a number
+```
 
 ### `Then the response "{json_path}" should be a boolean`
 Validates that the value at the specified JSONPath is of type boolean.
 
+**JSONPath Examples:**
+```gherkin
+Then the response "$.active" should be a boolean
+Then the response "$.user.verified" should be a boolean
+Then the response "$.data.isPublic" should be a boolean
+```
+
 ### `Then the response "{json_path}" should be an array`
 Validates that the value at the specified JSONPath is of type array.
+
+**JSONPath Examples:**
+```gherkin
+Then the response "$.users" should be an array
+Then the response "$.data.items" should be an array
+Then the response "$.user.roles" should be an array
+```
 
 ### `Then the response "{json_path}" should be an object`
 Validates that the value at the specified JSONPath is of type object.
 
+**JSONPath Examples:**
+```gherkin
+Then the response "$.user" should be an object
+Then the response "$.data.address" should be an object
+Then the response "$.metadata" should be an object
+```
+
 ### `Then the response "{json_path}" should be null`
 Validates that the value at the specified JSONPath is null.
+
+**JSONPath Examples:**
+```gherkin
+Then the response "$.deletedAt" should be null
+Then the response "$.user.middleName" should be null
+Then the response "$.data.optionalField" should be null
+```
 
 ### `Then the response "{json_path}" should not be null`
 Validates that the value at the specified JSONPath is not null.
 
+**JSONPath Examples:**
+```gherkin
+Then the response "$.id" should not be null
+Then the response "$.user.email" should not be null
+Then the response "$.data.createdAt" should not be null
+```
+
 ### `Then the response "{json_path}" should be a valid email`
 Validates that the value at the specified JSONPath has a valid email format.
+
+**JSONPath Examples:**
+```gherkin
+Then the response "$.email" should be a valid email
+Then the response "$.user.email" should be a valid email
+Then the response "$.contact.primaryEmail" should be a valid email
+```
 
 ### `Then the response "{json_path}" should be a valid URL`
 Validates that the value at the specified JSONPath has a valid URL format.
 
+**JSONPath Examples:**
+```gherkin
+Then the response "$.website" should be a valid URL
+Then the response "$.user.profileUrl" should be a valid URL
+Then the response "$.data.imageUrl" should be a valid URL
+```
+
 ### `Then the response "{json_path}" should be a valid UUID`
 Validates that the value at the specified JSONPath has a valid UUID format.
+
+**JSONPath Examples:**
+```gherkin
+Then the response "$.uuid" should be a valid UUID
+Then the response "$.user.id" should be a valid UUID
+Then the response "$.transaction.referenceId" should be a valid UUID
+```
 
 ---
 

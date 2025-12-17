@@ -335,22 +335,29 @@ And la respuesta debe tener 0 elementos
 ### `Then cada elemento debe tener el campo "{campo}"`
 Valida que cada elemento del array tenga un campo específico.
 
-**Ejemplo:**
+**Ejemplos:**
 ```gherkin
 When hago una petición GET a "/users"
 Then la respuesta debe ser un array
 And cada elemento debe tener el campo "id"
 And cada elemento debe tener el campo "name"
 And cada elemento debe tener el campo "email"
+And cada elemento debe tener el campo "address"
 ```
 
 ### `Then el array "{ruta_array}" debe contener un elemento con "{campo}" igual a "{valor}"`
 Valida que un array (posiblemente anidado) contenga un elemento con un valor específico.
 
-**Ejemplo:**
+**Ejemplos con JSONPath:**
 ```gherkin
+# Array de nivel raíz (cuando la respuesta es un array directamente)
+Then el array "users" debe contener un elemento con "id" igual a "123"
 Then el array "users" debe contener un elemento con "name" igual a "Juan"
-And el array "data.items" debe contener un elemento con "id" igual a "123"
+
+# Array anidado usando notación de punto
+Then el array "data.items" debe contener un elemento con "status" igual a "active"
+Then el array "response.users" debe contener un elemento con "email" igual a "juan@example.com"
+Then el array "data.products" debe contener un elemento con "category" igual a "electronics"
 ```
 
 ---
@@ -360,14 +367,28 @@ And el array "data.items" debe contener un elemento con "id" igual a "123"
 ### `When guardo el valor del campo "{campo}" en la variable "{variable}"`
 Extrae el valor de un campo de la respuesta y lo almacena en una variable.
 
-**Ejemplo:**
+**Ejemplos con JSONPath:**
 ```gherkin
+# Campo simple de nivel raíz
+When guardo el valor del campo "id" en la variable "userId"
+
+# Campo anidado
+When guardo el valor del campo "user.email" en la variable "userEmail"
+
+# Campo profundamente anidado
+When guardo el valor del campo "data.address.city" en la variable "city"
+
+# Primer elemento de un array
+When guardo el valor del campo "items[0].id" en la variable "firstItemId"
+
+# Ejemplo completo
 When hago una petición POST a "/users" con el cuerpo:
   """
   {"name": "Juan", "email": "juan@example.com"}
   """
 Then el código de respuesta debe ser 201
 When guardo el valor del campo "id" en la variable "userId"
+When guardo el valor del campo "email" en la variable "userEmail"
 ```
 
 ### `When guardo la respuesta completa en la variable "{variable}"`
@@ -489,19 +510,47 @@ Then el tiempo de respuesta debe ser menor a 2.0 segundos
 ### `Then la respuesta "{ruta_json}" debe ser "{valor_esperado}"`
 Valida el resultado de una expresión JSONPath (string).
 
-**Ejemplo:**
+**Ejemplos con JSONPath:**
 ```gherkin
+# Campo simple
+Then la respuesta "$.name" debe ser "Juan Pérez"
+
+# Campo anidado
+Then la respuesta "$.user.email" debe ser "juan@example.com"
+
+# Campo profundamente anidado
+Then la respuesta "$.data.address.city" debe ser "Santiago"
+
+# Primer elemento de array
+Then la respuesta "$.items[0].status" debe ser "active"
+
+# Múltiples validaciones
 Then la respuesta "$.user.name" debe ser "Juan Pérez"
-And la respuesta "$.data[0].status" debe ser "active"
+And la respuesta "$.user.email" debe ser "juan@example.com"
+And la respuesta "$.user.address.city" debe ser "Santiago"
 ```
 
 ### `Then la respuesta "{ruta_json}" debe ser {valor_esperado:d}`
 Valida el resultado de una expresión JSONPath (número).
 
-**Ejemplo:**
+**Ejemplos con JSONPath:**
 ```gherkin
+# Campo numérico simple
+Then la respuesta "$.id" debe ser 123
+
+# Campo anidado
 Then la respuesta "$.user.age" debe ser 30
-And la respuesta "$.data.count" debe ser 10
+
+# Contador
+Then la respuesta "$.data.count" debe ser 10
+
+# Precio en array
+Then la respuesta "$.items[0].price" debe ser 99
+
+# Múltiples validaciones numéricas
+Then la respuesta "$.user.id" debe ser 1
+And la respuesta "$.user.age" debe ser 30
+And la respuesta "$.data.total" debe ser 100
 ```
 
 ---
@@ -578,81 +627,103 @@ Then la respuesta debe coincidir con el archivo de esquema "schemas/user_schema.
 ### `Then la respuesta "{ruta_json}" debe ser una cadena`
 Valida que el resultado de una expresión JSONPath sea una cadena (string).
 
-**Ejemplo:**
+**Ejemplos con JSONPath:**
 ```gherkin
-Then la respuesta "$.user.name" debe ser una cadena
+Then la respuesta "$.name" debe ser una cadena
+Then la respuesta "$.user.email" debe ser una cadena
+Then la respuesta "$.data.description" debe ser una cadena
+Then la respuesta "$.items[0].title" debe ser una cadena
 ```
 
 ### `Then la respuesta "{ruta_json}" debe ser un número`
 Valida que el resultado de una expresión JSONPath sea un número.
 
-**Ejemplo:**
+**Ejemplos con JSONPath:**
 ```gherkin
+Then la respuesta "$.id" debe ser un número
 Then la respuesta "$.user.age" debe ser un número
+Then la respuesta "$.data.count" debe ser un número
+Then la respuesta "$.items[0].price" debe ser un número
 ```
 
 ### `Then la respuesta "{ruta_json}" debe ser un booleano`
 Valida que el resultado de una expresión JSONPath sea un booleano.
 
-**Ejemplo:**
+**Ejemplos con JSONPath:**
 ```gherkin
-Then la respuesta "$.user.active" debe ser un booleano
+Then la respuesta "$.active" debe ser un booleano
+Then la respuesta "$.user.verified" debe ser un booleano
+Then la respuesta "$.data.isPublic" debe ser un booleano
 ```
 
 ### `Then la respuesta "{ruta_json}" debe ser un array`
 Valida que el resultado de una expresión JSONPath sea un array.
 
-**Ejemplo:**
+**Ejemplos con JSONPath:**
 ```gherkin
 Then la respuesta "$.users" debe ser un array
+Then la respuesta "$.data.items" debe ser un array
+Then la respuesta "$.user.roles" debe ser un array
 ```
 
 ### `Then la respuesta "{ruta_json}" debe ser un objeto`
 Valida que el resultado de una expresión JSONPath sea un objeto.
 
-**Ejemplo:**
+**Ejemplos con JSONPath:**
 ```gherkin
-Then la respuesta "$.user.address" debe ser un objeto
+Then la respuesta "$.user" debe ser un objeto
+Then la respuesta "$.data.address" debe ser un objeto
+Then la respuesta "$.metadata" debe ser un objeto
 ```
 
 ### `Then la respuesta "{ruta_json}" debe ser null`
 Valida que el resultado de una expresión JSONPath sea null.
 
-**Ejemplo:**
+**Ejemplos con JSONPath:**
 ```gherkin
-Then la respuesta "$.user.deletedAt" debe ser null
+Then la respuesta "$.deletedAt" debe ser null
+Then la respuesta "$.user.middleName" debe ser null
+Then la respuesta "$.data.optionalField" debe ser null
 ```
 
 ### `Then la respuesta "{ruta_json}" no debe ser null`
 Valida que el resultado de una expresión JSONPath NO sea null.
 
-**Ejemplo:**
+**Ejemplos con JSONPath:**
 ```gherkin
-Then la respuesta "$.user.id" no debe ser null
+Then la respuesta "$.id" no debe ser null
+Then la respuesta "$.user.email" no debe ser null
+Then la respuesta "$.data.createdAt" no debe ser null
 ```
 
 ### `Then la respuesta "{ruta_json}" debe ser un email válido`
 Valida que el resultado de una expresión JSONPath sea un email válido.
 
-**Ejemplo:**
+**Ejemplos con JSONPath:**
 ```gherkin
+Then la respuesta "$.email" debe ser un email válido
 Then la respuesta "$.user.email" debe ser un email válido
+Then la respuesta "$.contact.primaryEmail" debe ser un email válido
 ```
 
 ### `Then la respuesta "{ruta_json}" debe ser una URL válida`
 Valida que el resultado de una expresión JSONPath sea una URL válida.
 
-**Ejemplo:**
+**Ejemplos con JSONPath:**
 ```gherkin
-Then la respuesta "$.user.website" debe ser una URL válida
+Then la respuesta "$.website" debe ser una URL válida
+Then la respuesta "$.user.profileUrl" debe ser una URL válida
+Then la respuesta "$.data.imageUrl" debe ser una URL válida
 ```
 
 ### `Then la respuesta "{ruta_json}" debe ser un UUID válido`
 Valida que el resultado de una expresión JSONPath sea un UUID válido.
 
-**Ejemplo:**
+**Ejemplos con JSONPath:**
 ```gherkin
-Then la respuesta "$.user.uuid" debe ser un UUID válido
+Then la respuesta "$.uuid" debe ser un UUID válido
+Then la respuesta "$.user.id" debe ser un UUID válido
+Then la respuesta "$.transaction.referenceId" debe ser un UUID válido
 ```
 
 ---
