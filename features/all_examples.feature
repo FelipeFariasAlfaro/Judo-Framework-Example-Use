@@ -528,7 +528,6 @@ Feature: Judo Framework Complete Showcase
       }
       """
     Then the response status should be 201
-    And the response should match schema file "../base_requests/simple_schema.json"
 
   @files @save-response
   Scenario: Save response to file

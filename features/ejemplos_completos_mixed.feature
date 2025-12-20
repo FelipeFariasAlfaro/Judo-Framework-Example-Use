@@ -1,5 +1,5 @@
 @all @mix
-Feature: Demostración Completa de Judo Framework
+Feature: Demostración Completa de Judo Framework MIX
   Esta característica demuestra todas las capacidades de Judo Framework
   Cada escenario muestra una funcionalidad o tipo de paso específico
 
