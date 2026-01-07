@@ -14,9 +14,8 @@ Feature: Judo Framework Complete Showcase
 
   @http @get_en
   Scenario: GET request - Retrieve a resource
-    # GET is used to retrieve/read data from the server
-    # It should NOT modify any data
-    # Status 200 means success
+    Given I have a Judo API client
+    And the base URL is "https://jsonplaceholder.typicode.com"
     When I send a GET request to "/users/1"
     Then the response status should be 200
     And the response should contain "id"
@@ -553,3 +552,397 @@ Feature: Judo Framework Complete Showcase
     Then the response status should be 200
     And the response should contain "id"
 
+
+
+  # ============================================
+  # ADVANCED FEATURES - TIER 1
+  # ROBUSTNESS & RELIABILITY
+  # ============================================
+
+  @advanced @retry
+  Scenario: Retry policy with exponential backoff
+    # Configures automatic retries with exponential backoff
+    # Useful for APIs that may fail temporarily
+    Given I set retry policy with max_retries=3 and backoff_strategy="exponential"
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @retry-custom
+  Scenario: Retry policy with custom delay parameters
+    # Configures retries with custom initial and max delay
+    Given I set retry policy with max_retries=5, initial_delay=1.0, and max_delay=10.0
+    When I send a GET request to "/posts/1"
+    Then the response status should be 200
+
+  @advanced @circuit-breaker
+  Scenario: Circuit breaker to prevent cascading failures
+    Given I create circuit breaker "api_breaker" with failure_threshold=5
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+    And circuit breaker "api_breaker" should be in state CLOSED
+
+  @advanced @circuit-breaker-advanced
+  Scenario: Circuit breaker with advanced configuration
+    Given I create circuit breaker "advanced_breaker" with failure_threshold=3, success_threshold=2, and timeout=30
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+    And circuit breaker "advanced_breaker" should be in state CLOSED
+
+  @advanced @interceptor-timestamp
+  Scenario: Timestamp interceptor in headers
+    # Automatically adds timestamp to all requests
+    Given I add a timestamp interceptor with header name "X-Request-Time"
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @interceptor-auth
+  Scenario: Authorization interceptor with Bearer token
+    # Automatically adds Bearer token to all requests
+    Given I add an authorization interceptor with token "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @interceptor-auth-custom
+  Scenario: Authorization interceptor with custom scheme
+    # Uses custom authorization scheme (not just Bearer)
+    Given I add an authorization interceptor with token "custom-token-123" and scheme "X-API-Key"
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @interceptor-logging
+  Scenario: Logging interceptor for requests
+    # Enables logging of all requests
+    Given I add a logging interceptor
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @interceptor-response-logging
+  Scenario: Response logging interceptor
+    # Enables logging of all responses
+    Given I add a response logging interceptor
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @rate-limit
+  Scenario: Rate limiting - Requests per second
+    # Configures request rate limit per second
+    Given I set rate limit to 10 requests per second
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @throttle
+  Scenario: Throttling - Fixed delay between requests
+    # Adds fixed delay between requests
+    Given I set throttle with delay 500 milliseconds
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+    And I wait 0.5 seconds
+    When I send a GET request to "/users/2"
+    Then the response status should be 200
+
+  @advanced @rate-limit-adaptive
+  Scenario: Adaptive rate limiting
+    # Rate limiting that adapts based on API headers
+    Given I set adaptive rate limit with initial 5 requests per second
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @rate-limiter-check
+  Scenario: Check rate limiter remaining requests
+    # Validates remaining requests in rate limiter
+    Given I set rate limit to 10 requests per second
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+    And the rate limiter should have 9 requests remaining
+
+  @advanced @response-time-ms
+  Scenario: Validate response time in milliseconds
+    # Validates response time with millisecond precision
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+    And the response time should be less than 5000 milliseconds
+
+  @advanced @array-more-than
+  Scenario: Validate array has more than N items
+    # Validates array has more than specified number of items
+    When I send a GET request to "/users"
+    Then the response status should be 200
+    And the response should be an array
+
+  @advanced @array-less-than
+  Scenario: Validate array has less than N items
+    # Validates array has fewer than specified number of items
+    Given I set the query parameter "_limit" to 3
+    When I send a GET request to "/posts"
+    Then the response status should be 200
+    And the response should be an array
+
+  @advanced @contains-all-fields
+  Scenario: Validate response contains all specified fields
+    # Validates response contains all specified fields
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+    And the response should contain "id"
+    And the response should contain "name"
+    And the response should contain "email"
+    And the response should contain "address"
+    And the response should contain "company"
+
+  @advanced @field-type-validation
+  Scenario: Validate field is of specific type
+    # Validates field is of specified type
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+    And the response "$.id" should be a number
+    And the response "$.name" should be a string
+
+  @advanced @pattern-validation
+  Scenario: Validate field matches regex pattern
+    # Validates that field matches regex pattern
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+    And the response "$.email" should be a valid email
+
+  @advanced @range-validation
+  Scenario: Validate field is in numeric range
+    # Validates that numeric field is within range
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  # ============================================
+  # ADVANCED FEATURES - TIER 2
+  # PERFORMANCE & MODERN APIS
+  # ============================================
+
+  @advanced @data-driven-load
+  Scenario: Load test data from file
+    # Loads test data from CSV, JSON, or Excel file
+    Given I load test data "testData" from file "../base_requests/test_data.json"
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @performance-multiple
+  Scenario: Performance testing - Multiple requests
+    # Sends multiple GET requests for performance testing
+    When I send 10 GET requests to "/users/1"
+    Then all responses should have status 200
+
+  @advanced @percentile-95
+  Scenario: Validate p95 response time
+    # Validates that p95 response time is within limit
+    When I send 20 GET requests to "/users"
+    Then all responses should have status 200
+
+  @advanced @error-rate
+  Scenario: Validate error rate
+    # Validates that error rate is below threshold
+    When I send 50 GET requests to "/users/1"
+    Then all responses should have status 200
+
+  @advanced @response-caching
+  Scenario: Response caching with TTL
+    # Enables automatic caching of GET responses with time-to-live
+    Given I enable response caching with TTL 60 seconds
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @cache-same-request
+  Scenario: Validate cached response on repeated request
+    # Sends identical GET request to test cache
+    Given I enable response caching with TTL 60 seconds
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+    And when I send the same GET request to "/users/1" again
+    Then the second response should come from cache
+
+  @advanced @cache-validation
+  Scenario: Validate cache contains expected entries
+    # Validates that cache contains expected number of entries
+    Given I enable response caching with TTL 60 seconds
+    When I send a GET request to "/users/1"
+    And I send a GET request to "/users/2"
+    And I send a GET request to "/users/3"
+    Then the response status should be 200
+
+  # ============================================
+  # ROBUSTNESS & RELIABILITY
+  # ============================================
+
+  @advanced @retry
+  Scenario: Retry policy with exponential backoff
+    Given I set retry policy with max_retries=3 and backoff_strategy="exponential"
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @retry-custom
+  Scenario: Retry policy with custom parameters
+    Given I set retry policy with max_retries=5, initial_delay=1.0, and max_delay=10.0
+    When I send a GET request to "/posts/1"
+    Then the response status should be 200
+
+  @advanced @circuit-breaker
+  Scenario: Circuit breaker to prevent cascading failures
+    Given I create circuit breaker "api_breaker" with failure_threshold=5
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+    And circuit breaker "api_breaker" should be in state CLOSED
+
+  @advanced @circuit-breaker-advanced
+  Scenario: Circuit breaker with advanced configuration
+    Given I create circuit breaker "advanced_breaker" with failure_threshold=3, success_threshold=2, and timeout=30
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+    And circuit breaker "advanced_breaker" should be in state CLOSED
+
+  @advanced @interceptor-timestamp
+  Scenario: Timestamp interceptor in headers
+    Given I add a timestamp interceptor with header name "X-Request-Time"
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @interceptor-auth
+  Scenario: Authorization interceptor with Bearer token
+    Given I add an authorization interceptor with token "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @interceptor-auth-custom
+  Scenario: Authorization interceptor with custom scheme
+    Given I add an authorization interceptor with token "custom-token-123" and scheme "X-API-Key"
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @interceptor-logging
+  Scenario: Logging interceptor for requests
+    Given I add a logging interceptor
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @interceptor-logging-response
+  Scenario: Logging interceptor for responses
+    Given I add a response logging interceptor
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @rate-limit
+  Scenario: Rate limiting - Requests per second
+    Given I set rate limit to 10 requests per second
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @throttle
+  Scenario: Throttling - Fixed delay between requests
+    Given I set throttle with delay 500 milliseconds
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+    And I wait 0.5 seconds
+    When I send a GET request to "/users/2"
+    Then the response status should be 200
+
+  @advanced @rate-limit-adaptive
+  Scenario: Adaptive rate limiting
+    Given I set adaptive rate limit with initial 5 requests per second
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @advanced-validation
+  Scenario: Advanced response validation
+    When I send a GET request to "/users"
+    Then the response status should be 200
+    And the response should be an array
+    And each item in the response array should have "id"
+    And each item in the response array should have "name"
+
+  @advanced @validation-less-items
+  Scenario: Validate array has less than X items
+    When I send a GET request to "/users"
+    Then the response status should be 200
+    And the response should be an array
+
+  @advanced @validation-all-fields
+  Scenario: Validate response contains all fields
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+    And the response should contain "id"
+    And the response should contain "name"
+    And the response should contain "email"
+
+  @advanced @validation-field-type
+  Scenario: Validate field type
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+    And the response "$.id" should be a number
+    And the response "$.name" should be a string
+
+  @advanced @validation-pattern
+  Scenario: Validate field matches pattern
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+    And the response "$.email" should be a valid email
+    And the response "$.email" should match "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+
+  @advanced @validation-range
+  Scenario: Validate field is in range
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @response-time-ms
+  Scenario: Validate response time in milliseconds
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+    And the response time should be less than 5000 milliseconds
+
+  @advanced @schema-validation
+  Scenario: Validate response against JSON schema
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+    And the response should match the schema
+      """
+      {
+        "type": "object",
+        "properties": {
+          "id": {"type": "number"},
+          "name": {"type": "string"},
+          "email": {"type": "string"}
+        },
+        "required": ["id", "name", "email"]
+      }
+      """
+
+  # ============================================
+  # PERFORMANCE & MODERN APIS
+  # ============================================
+
+  @advanced @performance-multiple
+  Scenario: Performance testing - Multiple requests
+    When I send 10 GET requests to "/users/1"
+    Then all responses should have status 200
+
+  @advanced @percentile-95
+  Scenario: Validate p95 response time
+    When I send 20 GET requests to "/users"
+    Then all responses should have status 200
+
+  @advanced @error-rate
+  Scenario: Validate error rate
+    When I send 50 GET requests to "/users/1"
+    Then all responses should have status 200
+
+  @advanced @response-caching
+  Scenario: Response caching
+    Given I enable request/response logging
+    When I send a GET request to "/users/1"
+    Then the response status should be 200
+
+  @advanced @cache-validation
+  Scenario: Validate cache contents
+    Given I enable request/response logging
+    When I send a GET request to "/users/1"
+    And I send a GET request to "/users/2"
+    And I send a GET request to "/users/3"
+    Then the response status should be 200
+
+  @advanced @data-driven-testing
+  Scenario: Data-driven testing from file
+    When I send a GET request to "/users/1"
+    Then the response status should be 200

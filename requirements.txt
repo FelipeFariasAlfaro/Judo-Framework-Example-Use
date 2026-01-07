@@ -4,13 +4,7 @@
 
 # Judo Framework - Framework principal para testing de APIs
 # Incluye automáticamente: behave, requests, jsonpath-ng y otras dependencias
-judo-framework>=1.0.0
+judo-framework
 
 # Python-dotenv - Variables de entorno desde archivos .env
 python-dotenv>=0.19.0
-
-# Playwright - Automatización de navegadores (para tests frontend)
-playwright>=1.40.0
-
-# Allure - Reportes avanzados con screenshots (incluido en judo-framework)
-# allure-behave>=2.13.0

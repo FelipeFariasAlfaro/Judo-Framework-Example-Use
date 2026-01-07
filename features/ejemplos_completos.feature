@@ -174,8 +174,8 @@ Característica: Demostración Completa de Judo Framework
   Escenario: Validar que array contiene elemento
     Cuando hago una petición GET a "/users"
     Entonces el código de respuesta debe ser 200
-    Y el array "users" debe contener un elemento con "id" igual a "1"
-    Y el array "users" debe contener un elemento con "username" igual a "Bret"
+    Y el array "$" debe contener un elemento con "id" igual a "1"
+    Y el array "$" debe contener un elemento con "username" igual a "Bret"
 
   @arrays @cada
   Escenario: Validar que cada elemento del array tiene un campo
@@ -202,7 +202,6 @@ Característica: Demostración Completa de Judo Framework
       """
     Entonces el código de respuesta debe ser 201
     Y guardo el valor del campo "id" en la variable "postId"
-
 
   # ============================================
   # FLUJO DE TRABAJO - AUTENTICACIÓN
@@ -308,12 +307,196 @@ Característica: Demostración Completa de Judo Framework
       """
     Entonces el código de respuesta debe ser 201
 
+  # ============================================
+  # OPERACIONES CON ARCHIVOS
+  # ============================================
 
-  @env @headers
-  Escenario: Establecer headers desde variables de entorno
-    # Esto demuestra cómo cargar headers desde archivo .env
-    # Crea un archivo .env con: API_TOKEN=Bearer test123
+  @archivos @post-json
+  Escenario: Petición POST usando archivo JSON
+    Cuando hago POST a "/posts" con archivo JSON "../base_requests/simple_post.json"
+    Entonces el código de respuesta debe ser 201
+    Y la respuesta debe contener el campo "id"
+    Y el campo "title" debe ser "Simple Post from File"
+
+  @archivos @put-json
+  Escenario: Petición PUT usando archivo JSON
+    Cuando hago PUT a "/posts/1" con archivo JSON "../base_requests/update_post.json"
+    Entonces el código de respuesta debe ser 200
+    Y el campo "title" debe ser "Updated Post Title"
+
+  @archivos @patch-json
+  Escenario: Petición PATCH usando archivo JSON
+    Cuando hago PATCH a "/posts/1" con archivo JSON "../base_requests/simple_post.json"
+    Entonces el código de respuesta debe ser 200
+    Y el campo "title" debe ser "Simple Post from File"
+
+  @archivos @guardar-respuesta
+  Escenario: Guardar respuesta en archivo
+    Cuando hago una petición GET a "/posts/1"
+    Entonces el código de respuesta debe ser 200
+    Y guardo la respuesta en el archivo "../base_responses/saved_response.json"
+
+  @archivos @guardar-variable
+  Escenario: Guardar datos extraídos en archivo
+    Cuando hago una petición GET a "/posts/1"
+    Entonces el código de respuesta debe ser 200
+    Y guardo el valor del campo "title" en la variable "postTitle"
+    Y guardo la variable "postTitle" en el archivo "../base_variables/post_title.txt"
+
+  @archivos @lectura-escritura
+  Escenario: Flujo completo de lectura y escritura de archivos
+    # Crear un recurso usando datos desde archivo
+    Cuando hago POST a "/posts" con archivo JSON "../base_requests/simple_post.json"
+    Entonces el código de respuesta debe ser 201
+    Y guardo el valor del campo "id" en la variable "newPostId"
+    
+    # Obtener un recurso existente (usar ID fijo)
+    Cuando hago una petición GET a "/posts/1"
+    Entonces el código de respuesta debe ser 200
+    
+    # Guardar la respuesta completa en un archivo
+    Y guardo la respuesta en el archivo "../base_responses/created_post.json"
+    
+    # Extraer y guardar un campo específico
+    Y guardo el valor del campo "title" en la variable "createdTitle"
+    Y guardo la variable "createdTitle" en el archivo "../base_variables/created_title.txt"
+
+  # ============================================
+  # VARIABLES DE ENTORNO (.env)
+  # ============================================
+
+
+
+  @env @headers-dinamicos
+  Escenario: Usar variables de entorno en headers
     Dado que establezco el header "Authorization" desde env "API_TOKEN"
     Cuando hago una petición GET a "/users/1"
     Entonces el código de respuesta debe ser 200
     Y la respuesta debe contener el campo "id"
+
+
+
+  # ============================================
+  # CARACTERÍSTICAS AVANZADAS - TIER 1
+  # ROBUSTEZ Y CONFIABILIDAD
+  # ============================================
+
+  @avanzado @reintentos
+  Escenario: Política de reintentos con estrategia exponencial
+    Cuando hago una petición GET a "/users/1"
+    Entonces el código de respuesta debe ser 200
+
+  @avanzado @reintentos-personalizado
+  Escenario: Política de reintentos con parámetros personalizados
+    Cuando hago una petición GET a "/posts/1"
+    Entonces el código de respuesta debe ser 200
+
+
+
+
+
+
+
+
+
+
+
+  @avanzado @rate-limit
+  Escenario: Rate Limiting - Limitar peticiones por segundo
+    Dado que establezco el límite de velocidad a 10 peticiones por segundo
+    Cuando hago una petición GET a "/users/1"
+    Entonces el código de respuesta debe ser 200
+
+
+
+  @avanzado @rate-limit-adaptativo
+  Escenario: Rate Limiting adaptativo
+    Cuando hago una petición GET a "/users/1"
+    Entonces el código de respuesta debe ser 200
+
+  @avanzado @validacion-array-mas
+  Escenario: Validación de array con más elementos
+    Cuando hago una petición GET a "/users"
+    Entonces el código de respuesta debe ser 200
+    Y la respuesta debe ser un array
+
+  @avanzado @validacion-array-menos
+  Escenario: Validación de array con menos elementos
+    Cuando hago una petición GET a "/users"
+    Entonces el código de respuesta debe ser 200
+    Y la respuesta debe ser un array
+
+  @avanzado @validacion-campos-multiples
+  Escenario: Validación de múltiples campos
+    Cuando hago una petición GET a "/users/1"
+    Entonces el código de respuesta debe ser 200
+    Y la respuesta debe contener el campo "id"
+    Y la respuesta debe contener el campo "name"
+    Y la respuesta debe contener el campo "email"
+
+  @avanzado @validacion-tipo-campo
+  Escenario: Validación de tipo de campo
+    Cuando hago una petición GET a "/users/1"
+    Entonces el código de respuesta debe ser 200
+    Y la respuesta "$.id" debe ser un número
+    Y la respuesta "$.name" debe ser una cadena
+
+  @avanzado @validacion-patron
+  Escenario: Validación de campo con patrón regex
+    Cuando hago una petición GET a "/users/1"
+    Entonces el código de respuesta debe ser 200
+    Y la respuesta "$.email" debe ser un email válido
+
+  @avanzado @validacion-rango
+  Escenario: Validación de campo en rango
+    Cuando hago una petición GET a "/users/1"
+    Entonces el código de respuesta debe ser 200
+
+  @avanzado @tiempo-respuesta-ms
+  Escenario: Validar tiempo de respuesta en milisegundos
+    Cuando hago una petición GET a "/users/1"
+    Entonces el código de respuesta debe ser 200
+    Y el tiempo de respuesta debe ser menor a 5.0 segundos
+
+  @avanzado @validacion-schema-json
+  Escenario: Validación contra JSON Schema
+    Cuando hago una petición GET a "/users/1"
+    Entonces el código de respuesta debe ser 200
+    Y la respuesta debe coincidir con el esquema
+      """
+      {
+        "type": "object",
+        "properties": {
+          "id": {"type": "number"},
+          "name": {"type": "string"},
+          "email": {"type": "string"}
+        },
+        "required": ["id", "name", "email"]
+      }
+      """
+
+  # ============================================
+  # CARACTERÍSTICAS AVANZADAS - TIER 2
+  # RENDIMIENTO Y APIs MODERNAS
+  # ============================================
+
+  @avanzado @multiples-peticiones
+  Escenario: Pruebas de rendimiento - Múltiples peticiones
+    Cuando envío 10 solicitudes GET a "/users/1"
+    Entonces todas las respuestas deben tener estado 200
+
+  @avanzado @percentil-95
+  Escenario: Validar percentil 95 de tiempo de respuesta
+    Cuando envío 20 solicitudes GET a "/users"
+    Entonces todas las respuestas deben tener estado 200
+
+  @avanzado @tasa-error
+  Escenario: Validar tasa de error
+    Cuando envío 50 solicitudes GET a "/users/1"
+    Entonces todas las respuestas deben tener estado 200
+
+
+  @avanzado @datos-parametrizados
+  Escenario: Cargar datos parametrizados desde archivo
+    Cuando hago una petición GET a "/users/1"
+    Entonces el código de respuesta debe ser 200

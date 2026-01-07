@@ -1,0 +1,15 @@
+{
+  "method": "GET",
+  "url": "https://jsonplaceholder.typicode.com/users/3",
+  "endpoint": "/users/3",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "User-Agent": "Judo-Framework-Behave/1.0"
+  },
+  "query_parameters": {},
+  "timestamp": "2026-01-05T13:13:07.707627",
+  "scenario": "Validate cache contents",
+  "body": null,
+  "body_type": null
+}

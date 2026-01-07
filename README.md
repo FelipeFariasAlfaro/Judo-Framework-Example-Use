@@ -6,11 +6,11 @@ Este proyecto es una **demostración completa** de las capacidades de **Judo Fra
 
 El proyecto incluye ejemplos prácticos de testing de APIs REST, validaciones avanzadas, manejo de datos, flujos de trabajo complejos y mucho más.
 
-## 🎯 ¿Qué es Judo Framework?
+## ¿Qué es Judo Framework?
 
 Judo Framework es una herramienta que permite escribir tests de API de manera **declarativa y legible**, usando lenguaje natural (Gherkin) para describir los casos de prueba. Elimina la complejidad de escribir código de testing manual y se enfoca en **qué** probar, no en **cómo** probarlo.
 
-### ✨ Características Principales
+### Características Principales
 
 - 🌐 **Testing de APIs REST completo** (GET, POST, PUT, PATCH, DELETE)
 - ✅ **Validaciones avanzadas** (JSONPath, esquemas, arrays, tipos de datos)
@@ -20,7 +20,17 @@ Judo Framework es una herramienta que permite escribir tests de API de manera **
 - 📊 **Reportes detallados** (HTML, JSON, logs de API)
 - 🔧 **Configuración flexible** y fácil de usar
 
-## 🚀 Inicio Rápido
+
+### Información y ejemplos / References and examples
+
+[References for use in English / Refencias uso en inglés](JUDO_STEPS_REFERENCE_EN.md)
+[Referencias para uso en español full ](JUDO_STEPS_REFERENCE_ES.md)
+[Referencias para uso en modo MIXTO](JUDO_STEPS_REFERENCE_MIXED.md)
+[Referencias del mock server / Mock Server Reference](MOCK_SERVER_REFERENCE.md)
+[Referencias para uso de Playwirght / Playwrigth use references](PLAYWRIGHT_REFERENCE.md)
+
+
+## Inicio Rápido
 
 ### 1. **Prerrequisitos**
 
