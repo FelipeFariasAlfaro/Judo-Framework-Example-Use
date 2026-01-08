@@ -1,6 +1,6 @@
 # Judo Framework - Referencia Completa de Pasos (Español)
 
-**✅ VERIFICADO**: Todos los pasos extraídos del código fuente v1.5.8.1
+**✅ VERIFICADO**: Todos los pasos extraídos del código fuente v1.5.9.1
 
 ## Pasos de Configuración
 
@@ -206,6 +206,12 @@ Validar que resultado JSONPath tenga formato de UUID válido.
 
 ## Características Avanzadas - Circuit Breaker
 
+### `establezco la política de reintentos con max_retries={max_retries:d} y backoff_strategy="{strategy}"`
+Establecer política de reintentos con estrategia de backoff.
+
+### `establezco la política de reintentos con max_retries={max_retries:d}, initial_delay={initial_delay:f}, y max_delay={max_delay:f}`
+Establecer política de reintentos con parámetros de retraso personalizados.
+
 ### `creo un circuit breaker llamado "{name}" con failure_threshold={threshold:d}`
 Crear circuit breaker para prevenir fallas en cascada.
 
@@ -215,16 +221,19 @@ Crear circuit breaker con umbrales personalizados y timeout.
 ### `el circuit breaker "{name}" debe estar en estado {state}`
 Validar estado del circuit breaker (CLOSED, OPEN, HALF_OPEN).
 
+### `circuit breaker debe permanecer en estado CLOSED`
+Validar que circuit breaker permanezca cerrado.
+
 ## Características Avanzadas - Limitador de Velocidad
 
 ### `establezco el límite de velocidad a {requests_per_second:f} solicitudes por segundo`
 Configurar limitador de velocidad con solicitudes por segundo.
 
-### `establezco límite de velocidad adaptativo con inicial {rps:d} peticiones por segundo`
+### `establezco límite de velocidad adaptativo con inicial {rps:f} peticiones por segundo`
 Configurar limitador de velocidad adaptativo que se ajusta basado en tiempos de respuesta.
 
-### `establezco throttle con retraso {delay:d} milisegundos`
-Configurar throttle con retraso fijo entre solicitudes.
+### `establezco el acelerador con retraso de {delay_ms:f} milisegundos`
+Establecer throttle con retraso fijo entre solicitudes.
 
 ### `envío {count:d} solicitudes GET a "{endpoint}"`
 Enviar múltiples solicitudes GET para pruebas de rendimiento.
@@ -254,10 +263,10 @@ Desconectar de WebSocket (sintaxis alternativa).
 
 ## Características Avanzadas - GraphQL
 
-#### `ejecuto consulta GraphQL`
+### `ejecuto consulta GraphQL`
 Ejecutar consulta GraphQL usando el texto del paso como consulta.
 
-#### `ejecuto mutación GraphQL`
+### `ejecuto mutación GraphQL`
 Ejecutar mutación GraphQL usando el texto del paso como mutación.
 
 ## Características Avanzadas - Interceptores
@@ -268,11 +277,152 @@ Agregar timestamp a todas las solicitudes con encabezado especificado.
 ### `agrego un interceptor de autorización con token "{token}"`
 Agregar token de autorización a todas las solicitudes.
 
+### `agrego un interceptor de autorización con token "{token}" y esquema "{schema}"`
+Agregar interceptor de autorización con esquema personalizado.
+
 ### `agrego un interceptor de registro`
 Agregar interceptor de registro para registrar todas las solicitudes.
 
 ### `agrego un interceptor de registro de respuestas`
 Agregar interceptor de registro de respuestas para registrar todas las respuestas.
+
+## Pasos de Validación de Contratos
+
+### `cargo especificación OpenAPI desde "{spec_file}"`
+Cargar especificación OpenAPI.
+
+### `la respuesta debe coincidir con contrato OpenAPI para {method} {path}`
+Validar respuesta contra contrato OpenAPI.
+
+### `cargo el contrato OpenAPI desde "{contract_file}"`
+Cargar especificación de contrato OpenAPI para validación de contratos.
+
+### `cargo el contrato AsyncAPI desde "{contract_file}"`
+Cargar especificación de contrato AsyncAPI para validación de contratos.
+
+### `la respuesta debe coincidir con el esquema del contrato`
+Validar respuesta contra esquema del contrato OpenAPI cargado.
+
+### `la respuesta debe coincidir con el esquema "{schema_name}"`
+Validar respuesta contra esquema específico del contrato.
+
+### `el campo de respuesta "{field_path}" debe ser de tipo "{expected_type}"`
+Validar que un campo específico tenga el tipo de datos esperado.
+
+### `la respuesta debe tener los campos requeridos`
+Validar que la respuesta tenga todos los campos requeridos de la tabla del paso.
+
+### `el array de respuesta debe contener objetos con estructura`
+Validar que el array contenga objetos con estructura esperada de la tabla.
+
+### `la respuesta debe cumplir con el esquema JSON`
+Validar respuesta contra esquema JSON del texto del paso.
+
+### `la respuesta debe cumplir con el esquema JSON del archivo "{schema_file}"`
+Validar respuesta contra esquema JSON desde archivo.
+
+### `el campo de respuesta "{field_path}" debe coincidir con el patrón "{pattern}"`
+Validar que un campo coincida con patrón regex.
+
+### `la respuesta debe tener tipos de datos consistentes en elementos del array`
+Validar que todos los elementos del array tengan tipos de datos consistentes.
+
+### `valido los endpoints del contrato de API`
+Validar que todos los endpoints del contrato sean accesibles.
+
+### `el mensaje debe coincidir con el contrato AsyncAPI para canal "{channel}"`
+Validar mensaje contra contrato AsyncAPI para canal específico.
+
+### `cargo especificación AsyncAPI desde "{file_path}"`
+Cargar especificación AsyncAPI.
+
+## Pasos de Validación Avanzada de Formatos de Datos
+
+### `el campo de respuesta "{field_path}" debe ser un email válido`
+Validar que el campo contenga formato de dirección de email válido.
+
+### `el campo de respuesta "{field_path}" debe ser una URL válida`
+Validar que el campo contenga formato de URL válido.
+
+### `el campo de respuesta "{field_path}" debe ser un UUID válido`
+Validar que el campo contenga formato de UUID válido.
+
+### `el campo de respuesta "{field_path}" debe ser una fecha ISO válida`
+Validar que el campo contenga formato de fecha ISO válido.
+
+### `la respuesta debe tener estructura anidada`
+Validar que la respuesta tenga estructura anidada esperada del texto del paso.
+
+### `valido el cuerpo de petición contra contrato para {method} {path}`
+Validar cuerpo de petición contra especificación del contrato OpenAPI.
+
+### `valido los headers de respuesta contra contrato`
+Validar headers de respuesta contra contrato OpenAPI.
+
+### `la respuesta debe coincidir con especificación completa del contrato de datos`
+Validación comprensiva contra contrato cargado incluyendo headers y cuerpo.
+
+## Pasos Adicionales de Validación
+
+### `cargo datos de prueba del archivo "{file_path}"`
+Cargar datos de prueba desde archivo (sintaxis alternativa).
+
+### `ejecuto prueba dirigida por datos para cada fila`
+Ejecutar prueba dirigida por datos para cada fila.
+
+### `todas las pruebas deben completarse exitosamente`
+Validar que todas las pruebas dirigidas por datos se completaron exitosamente.
+
+### `envío la misma solicitud GET a "{endpoint}" nuevamente`
+Enviar solicitud GET idéntica (para pruebas de caché).
+
+### `la segunda respuesta debe provenir del caché`
+Validar que la respuesta proviene del caché.
+
+### `el caché debe contener {count:d} entradas`
+Validar número de entradas en caché.
+
+### `el tiempo promedio de respuesta debe ser menor a {max_time:d} milisegundos`
+Validar tiempo promedio de respuesta.
+
+### `el tiempo de respuesta p95 debe ser menor a {max_time:d} milisegundos`
+Validar tiempo de respuesta p95.
+
+### `la tasa de error debe ser menor al {percentage:d} por ciento`
+Validar tasa de error.
+
+### `me desconecto de WebSocket`
+Desconectar de WebSocket (sintaxis alternativa).
+
+### `la solicitud debe incluir encabezado Authorization`
+Validar que encabezado Authorization está presente.
+
+### `el token OAuth2 debe ser válido`
+Validar que token OAuth2 es válido.
+
+### `el token debe contener claim "{claim}" con valor "{value}"`
+Validar que token JWT contiene claim específico.
+
+### `ejecuto suite de pruebas`
+Ejecutar suite de pruebas.
+
+### `debo generar reportes en formatos`
+Generar reportes en múltiples formatos (basado en tabla).
+
+### `el reporte debe ser generado en formato "{format}"`
+Validar que reporte fue generado en formato especificado.
+
+### `la respuesta debe completarse a pesar de la latencia inyectada`
+Validar que respuesta se completó a pesar de inyección de latencia.
+
+### `algunas solicitudes pueden fallar debido a errores inyectados`
+Validar que algunas solicitudes fallaron debido a inyección de errores.
+
+### `solicitud y respuesta deben registrarse en archivo`
+Validar que solicitud/respuesta fueron registradas en archivo.
+
+### `el tiempo de respuesta debe ser menor a {milliseconds:d} milisegundos`
+Validar tiempo de respuesta en milisegundos.
 
 ---
 
@@ -282,4 +432,4 @@ Agregar interceptor de registro de respuestas para registrar todas las respuesta
 - Los pasos con `desde env` cargan variables desde archivos .env
 - JSONPath usa sintaxis estándar como `$.campo.subcampo`
 
-*Judo Framework v1.5.8.1 - Todos los pasos verificados contra código fuente*
+*Judo Framework v1.5.9.1 - Todos los pasos verificados contra código fuente*
